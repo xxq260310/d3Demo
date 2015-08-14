@@ -1,0 +1,59 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Data</title>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/d3/d3.js"></script>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="content">
+        <p>这两个p元素将被更新</p>
+        <p>这两个p元素将被更新</p>
+    </div>
+    <input type="button" value="绑定数据之更新数据" onclick="bindData('update')" />
+    <input type="button" value="绑定数据之插入数据" onclick="bindData('insert')" />
+    <input type="button" value="绑定数据之移除多余元素(请在更新和插入操作后在执行，便于查看效果)" onclick="bindData('remove')" />
+    <input type="button" value="重置" onclick="bindData('reset')" />
+    <input type="button" value="绑定数据" onclick="bindData('doall')" />
+    <div>
+        <p>可以尝试不同的点击顺序 看看分别会出现什么效果</p>
+    </div>
+</body>
+<script type="text/javascript">
+    function bindData(operation) {
+        var dataset0 = [1, "A", 2, "B", 3];
+        var p = d3.select("div#content").selectAll("p").data(dataset0);
+        if (operation == 'update') { //虚拟的update
+            p.text(function (d, i) { return "dataset0[" + i + "] 是" + d });
+        };
+
+        if (operation == "insert") {
+            p.enter().append("p").text(function (d, i) { return i + ":" + d });
+        };
+
+        if (operation == "remove") {
+            dataset0.pop(); //删除最后一个元素
+            var rp = d3.select("div#content").selectAll("p").data(dataset0);
+            rp.exit().remove(); // exit() 选择多余的元素 ； remove() 移除选中的元素
+        };
+
+        if (operation == "reset") {
+            d3.select("div#content").selectAll("p").remove();
+            d3.select("div#content").selectAll("p").data([1,2]).enter().append("p").html("这两个元素将被更新");
+        }
+
+        if (operation == "doall") {
+            dataset0 = [1, "A", 2, "B", 3];
+            d3.select("div#content").selectAll("p").remove();
+            d3.select("div#content").selectAll("p").data([1, 2]).enter().append("p").html("这两个元素将被更新");
+            p.data(dataset0);
+
+            p.text(function (d, i) { return "dataset0[" + i + "]是" + d; });
+
+            p.enter().append("p").text(function (d, i) { return i + ":" + d });
+        }
+    }
+</script>
+</html>

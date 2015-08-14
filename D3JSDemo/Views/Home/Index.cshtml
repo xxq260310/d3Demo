@@ -1,0 +1,409 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style type="text/css">
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: black;
+            shape-rendering: crispEdges;
+        }
+
+        .axis text {
+            font-family: sans-serif;
+            font-size: 11px;
+        }
+    </style>
+    <script src="~/Scripts/d3/d3.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script>
+        $(function () {
+            //    d3.select("body").append("p");
+            //    d3.select("p").append("svg").attr("width", 50).attr("height", 50).append("circle").attr("cx", 25).attr("cy", 25).attr("r", 25).style("fill", "purple");
+
+            //    var bodySelection = d3.select("body");
+
+            //    var svgSelection = bodySelection.append("svg")
+            //        .attr("width", 50)
+            //        .attr("height", 50);
+
+            //    var circleSelection = svgSelection.append("circle")
+            //          .attr("cx", 25)
+            //         .attr("cy", 25)
+            //          .attr("r", 25)
+            //         .style("fill", "purple");
+
+
+            //    var data = ["1", "abc"];
+            //    var p = d3.selectAll("p").data(data).enter().append("p").text(function (a) { return a; });
+
+
+            //    var data = ["1", "abc"];
+            //    var p = d3.selectAll("p").data(data).enter().append("p").text("hello world");
+
+            //    var data = [1, 2, 3]
+            //    d3.select("body").selectAll("p")
+            //     .data(data)
+            //     .enter()
+            //     .append("p").text(function (b, i) { return "i = " + i + "," + "b = " + b; })
+
+            //    var circleRadii = [40, 20, 10];
+            //    d3.select("body")
+            //        .append("svg")
+            //        .attr("width", 100)
+            //        .attr("height", 100)
+            //        .selectAll("circle")
+            //        .data(circleRadii)
+            //        .enter()
+            //        .append("circle")
+            //        .attr("cx", 50)
+            //        .attr("cy", 50)
+            //        .attr("r", function (d) {
+            //            return d;
+            //        })
+            //        .attr("fill", function (d) {
+            //            var returnColor;
+            //            if (d == 40) {
+            //                returnColor = "green";
+            //            }
+            //            else if (d == 20) {
+            //                returnColor = "purple";
+            //            }
+            //            else if (d == 10) {
+            //                returnColor = "red";
+            //            }
+            //            return returnColor;
+            //        })
+
+            //    var spaceCircles = [70, 110, 150];
+            //    d3.select("body")
+            //        .append("svg")
+            //        .attr("width", 300)
+            //        .attr("height", 300)
+            //        .selectAll("circle")
+            //        .data(spaceCircles)
+            //        .enter()
+            //        .append("circle")
+            //        .attr("cx", function (d) { return d; })
+            //        .attr("cy", function (d) { return d; })
+            //        .attr("r", 20)
+            //        .attr("fill", function (d) {
+            //            var returnColor;
+            //            if (d == 70) {
+            //                returnColor = "green";
+            //            }
+            //            else if (d == 110) {
+            //                returnColor = "purple";
+            //            }
+            //            else if (d == 150) {
+            //                returnColor = "red";
+            //            }
+            //            return returnColor;
+            //        })
+
+            //    var jsonRectangles = [{ "x_axis": 10, "y_axis": 10, "height": 20, "width": 20, "color": "green" },
+            //        { "x_axis": 40, "y_axis": 40, "height": 20, "width": 20, "color": "purple" },
+            //        { "x_axis": 70, "y_axis": 70, "height": 20, "width": 20, "color": "red" },
+            //    ];
+            //    d3.select("body")
+            //        .append("svg")
+            //        .attr("width", 100)
+            //        .attr("height", 100)
+            //        .selectAll("rect")
+            //        .data(jsonRectangles)
+            //        .enter()
+            //        .append("rect")
+            //        .attr("x", function (d) { return d.x_axis; })
+            //        .attr("y", function (d) { return d.y_axis; })
+            //        .attr("height", function (d) { return d.height; })
+            //        .attr("width", function (d) { return d.width; })
+            //        .attr("fill", function (d) { return d.color; });
+
+            //    var jsonreverseRectangles = [{ "x_axis": 0, "y_axis": 0, "height": 30, "width": 30, "color": "purple" },
+            //{ "x_axis": 20, "y_axis": 5, "height": 30, "width": 30, "color": "blue" },
+            //{ "x_axis": 40, "y_axis": 10, "height": 30, "width": 30, "color": "green" },
+            //{ "x_axis": 60, "y_axis": 15, "height": 30, "width": 30, "color": "yellow" },
+            //{ "x_axis": 80, "y_axis": 20, "height": 30, "width": 30, "color": "red" }];
+
+            //    d3.select("body").append("svg").attr("width", 600).attr("height", 50).selectAll("rect").data(jsonreverseRectangles).enter().append("rect").
+            //    attr("x", function (d) { return d.x_axis; })
+            //    .attr("y", function (d) { return d.y_axis; })
+            //    .attr("width", function (d) { return d.width; })
+            //    .attr("height", function (d) { return d.height; })
+            //    .attr("fill", function (d) { return d.color; })
+            //});
+
+            //var svgContainer = d3.select("body").append("svg")
+            //    .attr("width", 200)
+            //    .attr("height", 200);
+            //var line = svgContainer.append("line")
+            //.attr("x1", 5)
+            //.attr("y1", 5)
+            //.attr("x2", 50)
+            //.attr("y2", 50)
+            //.attr("stroke", "black")
+            //.attr("stroke-width", 2);
+
+            //var secretAgent = {
+            //    "name": "James Bond",
+            //    "drink": "dry martini - shaken, not stirred",
+            //    "number": "007"
+            //};
+            //secretAgent.number;
+
+            //d3.select("body").append("svg").attr("width", 200).attr("height", 200).append("line")
+            //                         .attr("x1", 5)
+            //                         .attr("y1", 5)
+            //                         .attr("x2", 50)
+            //                         .attr("y2", 50)
+            //                         .attr("stroke-width", 2)
+            //                         .attr("stroke", "black");
+
+            //var data1 = [1, 2];
+            //d3.select("div.panel-body").selectAll("p").data(data1).enter().append("p").text("Heelo");
+
+
+
+            //var width = 300;  //画布的宽度
+            //var height = 300;   //画布的高度
+
+            //var svg = d3.select("div.panel-body")     //选择文档中的body元素
+            //    .append("svg")          //添加一个svg元素
+            //    .attr("width", width)       //设定宽度
+            //    .attr("height", height);    //设定高度
+            //var dataset = [250, 210, 170, 130, 90];
+            //var rectHeight = 25;   //每个矩形所占的像素高度(包括空白)
+
+            //svg.selectAll("rect")
+            //    .data(dataset)
+            //    .enter()
+            //    .append("rect")
+            //    .attr("x", 10)
+            //    .attr("y", function (d, i) {
+            //        return i * rectHeight;
+            //    })
+            //    .attr("width", function (d) {
+            //        return d;
+            //    })
+            //    .attr("height", rectHeight - 2)
+            //    .attr("fill", "steelblue");
+
+            //var width = 300;  //画布的宽度
+            //var height = 300;   //画布的高度
+            //var rectHeight1 = 25;   //每个矩形所占的像素高度(包括空白)
+            //var data = [2.5, 2.1, 1.7, 1.3, 0.9];
+            //var data1 = [3500, 2900, 2400, 1900, 1400];
+            //var svg = d3.select("div.panel-body")
+            //    .append("svg")          //添加一个svg元素
+            //    .attr("width", width)       //设定宽度
+            //    .attr("height", height);    //设定高度
+            //var svg1 = d3.select("div.panel-body")
+            //    .append("svg")          //添加一个svg元素
+            //    .attr("width", width)       //设定宽度
+            //    .attr("height", height);    //设定高度
+            //var linear = d3.scale.linear()                                 //定义线性比例尺
+            //        .domain([0, d3.max(data)])
+            //        .range([0, d3.max(data) * 100]);
+            //var index = [0, 1, 2, 3, 4];
+            //var color = ["red", "blue", "green", "yellow", "black"];
+            //var ordinal = d3.scale.ordinal().domain(index).range(color);       //定义序数比例尺
+            //svg.selectAll("rect")
+            //   .data(data)
+            //   .enter()
+            //   .append("rect")
+            //   .attr("x", 20)
+            //   .attr("y", function (d, i) {
+            //       return i * rectHeight1;
+            //   })
+            //   .attr("width", function (d) {
+            //       return linear(d);   //在这里用比例尺
+            //   })
+            //   .attr("height", rectHeight1 - 2)
+            //   .attr("fill", function (d) { return ordinal(d) });
+
+            //var linear1 = d3.scale.linear()
+            //    .domain([0, d3.max(data1)])
+            //    .range([0, (d3.max(data1)) / 10]);   //线性比例尺
+            //svg1.selectAll("rect")
+            //    .data(data1)
+            //    .enter()
+            //    .append("rect")
+            //    .attr("x", 50)
+            //    .attr("y", function (d, i) { return i * rectHeight1; })
+            //    .attr("width", function (d) { return linear1(d); })
+            //    .attr("height", rectHeight1 - 5)
+            //    .attr("fill", "steelblue");
+
+
+            //生成x坐标轴
+            var width = 600;  //画布的宽度
+            var height = 600;   //画布的高度
+            var data2 = [30, 20, 45, 12, 21];
+            var svg2 = d3.select("div.panel-body").append("svg").attr("width", width).attr("height", height);
+
+            var xScale = d3.scale.linear().domain([0, d3.max(data2)]).range([0, 500]);
+
+            var xaxis = d3.svg.axis().scale(xScale).orient("bottom");
+
+            svg2.append("g")
+                .attr("class", "axis")
+            .attr("transform", "translate(10,160)")
+            .call(xaxis);
+
+            svg2.selectAll("rect")
+                .data(data2)
+                .enter()
+                .append("rect")
+                .attr("x", 10)
+                .attr("y", function (d, i) { return i * 30 })
+                .attr("width", xScale)
+                .attr("height", 28)
+                .attr("fill", "red");
+
+            //生成y坐标轴
+            var svg3 = d3.select("div.panel-body").append("svg").attr("width", width).attr("height", width);
+            var data3 = [30, 20, 45, 12, 21];
+            var yAxisScale = d3.scale.linear().domain([0, d3.max(data3)]).range([500, 0]);
+            var yaxis = d3.svg.axis().scale(yAxisScale).orient("left");
+            svg3.append("g").attr("class", "axis").attr("transform", "translate(10,160)").call(yaxis);
+            svg3.selectAll("rect")
+                .data(data3)
+                .enter()
+                .append("rect")
+                .attr("x", function (d, i) {
+                    return 30 + yAxisScale(i);
+                })
+               .attr("y", function (d, i) {
+                   return 10;
+               })
+                .attr("height", yAxisScale)
+                  .attr("width", 28)
+                .attr("fill", "red");
+
+            //生成xy坐标轴
+            var width = 600;
+            var height = 600;
+            var dataset = [];
+            var num = 15;  //数组的数量
+
+            for (var i = 0; i < num ; i++) {
+                var tempnum = Math.floor(Math.random() * 50);   // 返回 0~49 整数
+                dataset.push(tempnum);
+            }
+
+            var svg = d3.select("div.panel-body").append("svg")
+                                    .attr("width", width)
+                                    .attr("height", height);
+
+            var xAxisScale = d3.scale.ordinal()
+                            .domain(d3.range(dataset.length))
+                            .rangeRoundBands([0, 500]);
+
+            var yAxisScale = d3.scale.linear()
+                            .domain([0, d3.max(dataset)])
+                            .range([500, 0]);
+
+            var xAxis = d3.svg.axis()
+                            .scale(xAxisScale)
+                            .orient("bottom");
+
+            var yAxis = d3.svg.axis()
+                            .scale(yAxisScale)
+                            .orient("left");
+
+            var xScale = d3.scale.ordinal()
+                            .domain(d3.range(dataset.length))
+                            .rangeRoundBands([0, 500], 0.05);
+
+            var yScale = d3.scale.linear()
+                            .domain([0, d3.max(dataset)])
+                            .range([0, 500]);
+
+            svg.selectAll("rect")
+               .data(dataset)
+               .enter()
+               .append("rect")
+               .attr("x", function (d, i) {
+                   return 30 + xScale(i);
+               })
+               .attr("y", function (d, i) {
+                   return 50 + 500 - yScale(d);
+               })
+               .attr("width", function (d, i) {
+                   return xScale.rangeBand();
+               })
+               .attr("height", yScale)
+               .attr("fill", "red");
+
+            svg.selectAll("text")
+                .data(dataset)
+                .enter().append("text")
+                .attr("x", function (d, i) {
+                    return 30 + xScale(i);
+                })
+               .attr("y", function (d, i) {
+                   return 50 + 500 - yScale(d);
+               })
+                .attr("dx", function (d, i) {
+                    return xScale.rangeBand() / 3;
+                })
+                .attr("dy", 15)
+                .attr("text-anchor", "begin")
+                .attr("font-size", 14)
+                .attr("fill", "white")
+                .text(function (d, i) {
+                    return d;
+                });
+
+            svg.append("g")
+                .attr("class", "axis")
+                .attr("transform", "translate(30,550)")
+                .call(xAxis);
+
+            svg.append("g")
+                .attr("class", "axis")
+                .attr("transform", "translate(30,50)")
+                .call(yAxis);
+        });
+    </script>
+</head>
+<body>
+
+    @*<svg width="600" height="50">
+            <rect x="0" y="0" width="30" height="30" fill="purple" />
+            <rect x="20" y="5" width="30" height="30" fill="blue" />
+            <rect x="40" y="10" width="30" height="30" fill="green" />
+            <rect x="60" y="15" width="30" height="30" fill="yellow" />
+            <rect x="80" y="20" width="30" height="30" fill="red" />
+        </svg>
+        <svg width="50" height="50">
+            <polyline fill="none" stroke="blue" stroke-width="2" points="05,30 15,30 15,20 25,20 25,10 35,10" />
+        </svg>
+        <svg width="50" height="50">
+            <polygon fill="yellow" stroke="blue" stroke-width="2" points="05,30 15,10 25,30" />
+        </svg>
+        <svg width="100%" height="100%">
+            <path d="M250 150 L150 350 L350 350 Z" stroke="red" stroke-width="2" fill="red" />
+        </svg>*@
+
+    <div class="panel panel-primary">
+        <div class="panel panel-heading">
+            <div class="panel-title">
+                <h2>First d3</h2>
+            </div>
+        </div>
+        <div class="panel-body">
+            @*<svg width="50" height="50">
+                    <polyline fill="none" stroke="blue" stroke-width="2" points="05,30 15,30 15,20 25,20 35,10"></polyline>
+                </svg>*@
+            <text x="20" y="20" font-family="sans-serif" font-size="20px" fill="red">Hello!</text>
+        </div>
+    </div>
+</body>
+</html>
