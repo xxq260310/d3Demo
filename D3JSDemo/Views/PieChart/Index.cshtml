@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     Layout = null;
 }
 <!DOCTYPE html>
@@ -12,20 +11,90 @@
     <script src="~/Scripts/bootstrap.js"></script>
     <script>
         $(function () {
-            var dataset = [30, 10, 43, 55, 13];
-            var pie = d3.layout.pie();
+            var dataset = [30, 43, 55, 10, 13];
+            var pie = d3.layout.pie();   //将数据转换成pie可视化的(将不适合图形化的数据转换成适合图形化的数据,Layout 只能转换数据，不能绘制图形)
 
-            var width = 600;
-            var height = 600;
-            var svg = d3.select("body").append("svg").attr("width", width).attr("height", height);
-            var outerRadius = width / 2;
-            var innerRadius = width / 4;
-            var arc = d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius);
-            var color = d3.scale.category10();
+            var width = 300;
+            var height = 300;
 
-            var arcs = svg.selectAll("g").data(pie(dataset)).enter().append("g").attr("transform", "translate(" + outerRadius + ", " + outerRadius + ")");
+            var svg = d3.select("div.panel-body")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height)
+                .attr("style", "margin:20px;");
 
-            arcs.append("path")
+            var outerRadius = width / 2;   //外半径
+            var innerRadius = 0;   //内半径
+
+            var arc = d3.svg.arc()        //定义弧线函数arc，并将内外半径传给arc
+                .innerRadius(innerRadius)
+                .outerRadius(outerRadius);
+
+            var color = d3.scale.category10();     //定义颜色比例尺
+
+            var arcs = svg.selectAll("g")     //定义组，设置偏移量
+                .data(pie(dataset))
+                .enter()
+                .append("g")
+                .attr("transform", "translate(" + outerRadius + ", " + outerRadius + ")");
+
+            arcs.append("path")         //绘制弧线，设置延迟，设置渐变方式
+                .attr("fill", "white")
+                .transition()
+                .duration(2000)
+                .ease("bounce")
+                //.ease("linear")
+                //.ease("circle")
+                //.ease("elastic")
+                .delay(function (d, i) { return 200 * i; })
+                .attr("fill", function (d, i) { return color(i); })
+                .attr("d", function (d) { return arc(d); });
+
+            arcs.append("text")
+                .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
+                .attr("text-anchor", "middle")
+                .text(function (d) { return d.value; });
+
+            var dataset = [30, 43, 55, 10, 13];
+            var pie = d3.layout.pie();   //将数据转换成pie可视化的(将不适合图形化的数据转换成适合图形化的数据,Layout 只能转换数据，不能绘制图形)
+
+
+
+
+            //.............
+            var width = 300;
+            var height = 300;
+
+            var svg = d3.select("div.panel-body")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height)
+                .attr("style", "margin:20px;");
+
+            var outerRadius = width / 2;   //外半径
+            var innerRadius = width / 8;   //内半径
+
+            var arc = d3.svg.arc()        //定义弧线函数arc生成器，并将内外半径传给arc
+                .innerRadius(innerRadius)
+                .outerRadius(outerRadius);
+
+            var color = d3.scale.category10();     //定义颜色比例尺
+
+            var arcs = svg.selectAll("g")     //定义组，绑定数据，设置偏移量
+                .data(pie(dataset))
+                .enter()
+                .append("g")
+                .attr("transform", "translate(" + outerRadius + ", " + outerRadius + ")");
+
+            arcs.append("path")         //绘制弧线，设置延迟，设置渐变方式
+                .attr("fill", "white")
+                .transition()
+                .duration(2000)
+                .ease("bounce")
+                //.ease("linear")
+                //.ease("circle")
+                //.ease("elastic")
+                .delay(function (d, i) { return 200 * i; })
                 .attr("fill", function (d, i) { return color(i); })
                 .attr("d", function (d) { return arc(d); });
 
@@ -42,10 +111,17 @@
     </script>
 </head>
 <body>
-
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">
+                <h2>饼状图</h2>
+            </div>
+        </div>
+        <div class="panel-body">
+        </div>
+    </div>
 </body>
 </html>
-
 
 
 

@@ -1,0 +1,143 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>百分比饼状图</title>
+    <script src="Scripts/d3/d3.js"></script>
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <script src="Scripts/jquery-1.10.2.js"></script>
+    <style type="text/css">
+        /*.tooltip {
+            font-family: simsun;
+            font-size: 14px;
+            width: 120;
+            height: auto;
+            position: absolute;
+            text-align: center;
+            border-style: solid;
+            border-width: 1px;
+            background-color: white;
+            border-radius: 5px;
+        }*/
+        .tooltip {
+            position: absolute;
+            width: 100px;
+            height: auto;
+            padding: 10px;
+            background-color: white;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            border-radius: 10px;
+            -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+            -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+            pointer-events: none;
+        }
+
+        .title {
+            font-family: Arial,微软雅黑;
+            font-size: 18px;
+            text-anchor: middle;
+        }
+
+        .subTitle {
+            font-family: Arial,宋体;
+            font-size: 12px;
+            text-anchor: middle;
+            fill: #666;
+        }
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            var width = 500;
+            var height = 400;
+            var title = "饼状图";
+            var subTitle = "手机销量占比";
+            var headHeight = 40;
+
+            var svg = d3.select("div.panel-body").append("svg").attr("width", width).attr("height", height);
+
+            var dataset = [["小米", 131.11], ["三星", 54.33], ["联想", 32.3], ["苹果", 177.7], ["华为", 66.6], ["其他", 24.2]];
+
+            var pie = d3.layout.pie().value(function (d) { return d[1] });  //function pie(data)
+            //var pie = d3.layout.pie();
+            var piedata = pie(dataset);
+
+            var fontsize = 14;
+
+            var outerRadius = 500 / 3;
+
+            var innerRadius = 0;
+
+            var arc = d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius);
+
+            var color = d3.scale.category10();
+
+            var g = svg.selectAll("g").data(piedata).enter().append("g").attr("transform", "translate(" + (outerRadius) + "," + (outerRadius) + ")");
+
+            g.append("path")
+                .attr("fill", "white")
+            .transition()
+            .duration(2000)
+            .ease("bounce")
+            .delay(function (d, i) { return i * 100; })
+            .attr("fill", function (d, i) { return color(i); })
+                .attr("d", function (d) { return arc(d); });
+
+            g.append("text")
+                .attr("fill", "none")
+                .transition()
+                .duration(2000)
+            .ease("elastic")
+                .delay(function (d, i) { return i * 100; })
+                .attr("fill", "white")
+                .attr("transform", function (d, i) {
+                    var x = arc.centroid(d)[0] * 1.4;
+                    var y = arc.centroid(d)[1] * 1.4;
+                    return "translate(" + x + "," + y + ")";
+                })
+                .attr("text-anchor", "middle")
+            .style("font-size", fontsize)
+            .text(function (d, i) {
+                //计算百分比
+                var percent = Number(d.value) / d3.sum(dataset, function (d) { return d[1]; }) * 100;
+
+                //保留1位小数点
+                return percent.toFixed(1) + "%";
+            });
+
+            var tooltip = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0.0);
+
+            g.on("mouseover", function (d) {
+                tooltip.html(d.data[0] + "的产量为" + "<br/>" + d.data[1] + "百万台")
+                .style("left", (d3.event.pageX) + "px")
+                .style("top", (d3.event.pageY) + "px")
+                .style("opacity", 1.0);
+            })
+            .on("mousemove", function (d) {
+                tooltip.style("left", (d3.event.pageX) + "px")
+                .style("top", (d3.event.pageY) + "px");
+            })
+            .on("mouseout", function (d) {
+                tooltip.style("opacity", 0.0);
+            })
+        });
+
+
+        //.....
+
+    </script>
+
+</head>
+<body>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">
+                <h2>百分比饼状图</h2>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="col-lg-3"></div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script src="Scripts/d3/d3.js"></script>
+    <script src="Scripts/jquery-1.10.2.js"></script>
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <style>
+        .chart {
+            font-family: Arial, sans-serif;
+            font-size: 10px;
+            padding-top: 20px;
+        }
+
+        .axis path, .axis line {
+            fill: none;
+            stroke: #000;
+            shape-rendering: crispEdges;
+        }
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            var width = 600;
+            var height = 500;
+            var margin = { top: 40, right: 40, bottom: 40, left: 40 };
+            var data = [
+                { "date": "2015-08-10", "temperature": 26 },
+                { "date": "2015-08-11", "temperature": 30 },
+                { "date": "2015-08-12", "temperature": 37 },
+                { "date": "2015-08-13", "temperature": 37 },
+                { "date": "2015-08-14", "temperature": 20 },
+                { "date": "2015-08-15", "temperature": 31 },
+                { "date": "2015-08-16", "temperature": 25 },
+                { "date": "2015-08-17", "temperature": 35 }
+            ];
+
+            var svgContainer = d3.select("div.panel-body")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height)
+                .attr("class", "chart")
+                .append("g")
+                .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+            // time scale
+            var xScale = d3.time.scale()
+                .domain([new Date(data[0].date), d3.time.day.offset(new Date(data[data.length - 1].date), 1)])
+                .rangeRound([0, width - margin.top - margin.right]);
+
+            //linear scale
+            var yScale = d3.scale.linear()
+                .domain([0, d3.max(data, function (d) { return d.temperature; })])
+                .range([height - margin.top - margin.bottom, 0]);
+
+            //define x axis
+            var xAxis = d3.svg.axis()
+                .scale(xScale)
+                .orient("bottom")
+                .tickFormat(d3.time.format('%a %d'))
+                        .tickSize(0)
+            .tickPadding(8);
+
+            //define y axis
+            var yAxis = d3.svg.axis()
+                .scale(yScale)
+                .orient("left")
+            .tickPadding(8);
+
+            //define color
+            var color = d3.scale.category10();
+
+            //define rect
+            svgContainer.selectAll("rect")
+            .data(data)
+            .enter()
+            .append("rect")
+                .attr("height", 0)
+                .attr("fill", "white")
+                .transition()
+                .duration(2000)
+                .ease("bounce")
+                //.ease("linear")
+                //.ease("circle")
+                //.ease("elastic")
+                .delay(function (d, i) { return 100 * i; })
+                .attr('x', function (d, i) { return xScale(new Date(d.date)); })
+                .attr('y', function (d) { return height - margin.top - margin.bottom - (height - margin.top - margin.bottom - yScale(d.temperature)) })
+                .attr("width", 20)
+                .attr("height", function (d) { return height - margin.top - margin.bottom - yScale(d.temperature) })
+                .attr("fill", function (d, i) { return color(i) });
+
+            //交互式操作
+            svgContainer.selectAll("rect").data(data)
+            .on("click", function (d, i) { d3.select(this).attr("fill", "green") })
+            .on("mouseover", function (d, i) { d3.select(this).attr("fill", "steelblue") })
+            .on("mouseout", function (d, i) {
+                d3.selectAll("rect").data(data)
+                    .transition()
+                    .duration(500)
+                    .attr("fill", function (d, i) { return color(i) })
+            });
+
+            //绑定文本
+            svgContainer.selectAll("text")
+                .data(data)
+                .enter()
+                .append("text")
+                .attr('x', function (d, i) { return xScale(new Date(d.date)); })
+                .attr('y', function (d) { return height - margin.top - margin.bottom - (height - margin.top - margin.bottom - yScale(d.temperature)) })
+                .attr('dx', 10)
+                .attr('dy', 20)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', 14)
+                .attr('fill', 'white')
+                .text(function (d) { return d.temperature; });
+
+            //将x轴添加到组中，并设置偏移量
+            svgContainer.append("g").attr("class", "x axis")
+                .attr("transform", 'translate(0, ' + (height - margin.top - margin.bottom) + ')')
+                .call(xAxis);
+
+            //将y轴添加到组中
+            svgContainer.append("g").attr("class", "y axis")
+                .call(yAxis);
+        });
+    </script>
+
+</head>
+<body>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">
+                <h2>The Histogram Layout</h2>
+            </div>
+        </div>
+        <div class="panel-body">
+
+        </div>
+    </div>
+</body>
+</html>

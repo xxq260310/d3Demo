@@ -172,17 +172,32 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Axis1.html" />
+    <Content Include="Axis2.html" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Drag-Pie.html" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="line.html" />
+    <Content Include="LineChart.html" />
+    <Content Include="PercentPie.html" />
+    <Content Include="折线图2.html" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="line chart.html" />
+    <Content Include="pie3.html" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\d3\d3.js" />
     <Content Include="Scripts\d3\d3.min.js" />
     <Content Include="Scripts\d3\LICENSE" />
+    <Content Include="timeScale.html" />
+    <Content Include="tooltipPie.html" />
+    <Content Include="XYAxis.html" />
+    <Content Include="XYAxis1.html" />
+    <Content Include="折线图.html" />
+    <Content Include="data.tsv" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

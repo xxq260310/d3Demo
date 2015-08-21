@@ -269,9 +269,13 @@
             //生成y坐标轴
             var svg3 = d3.select("div.panel-body").append("svg").attr("width", width).attr("height", width);
             var data3 = [30, 20, 45, 12, 21];
-            var yAxisScale = d3.scale.linear().domain([0, d3.max(data3)]).range([500, 0]);
+            var yAxisScale = d3.scale.linear().domain([0, d3.max(data3)]).range([0, 500]);
             var yaxis = d3.svg.axis().scale(yAxisScale).orient("left");
-            svg3.append("g").attr("class", "axis").attr("transform", "translate(10,160)").call(yaxis);
+            svg3.append("g")
+                .attr("class", "axis")
+                .attr("transform", "translate(10,160)")
+                .call(yaxis);
+
             svg3.selectAll("rect")
                 .data(data3)
                 .enter()

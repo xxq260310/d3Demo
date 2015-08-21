@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script src="Scripts/d3/d3.js"></script>
+    <script src="Scripts/jquery-1.10.2.js"></script>
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <script type="text/javascript">
+        var width = 500;
+        var height = 500;
+        var dataset = [["小米", 60.8], ["三星", 58.4], ["联想", 47.3], ["苹果", 46.6],
+						["华为", 41.3], ["酷派", 40.1], ["其他", 111.5]];
+
+        //console.log(dataset.sort(d3.ascending));
+
+        var svg = d3.select("div.panel-body").append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        var pie = d3.layout.pie();
+
+        var outerRadius = width / 4;
+        var innerRadius = 0;
+
+        var arc = d3.svg.arc()
+            .innerRadius(innerRadius)
+            .outerRadius(outerRadius);
+
+        var color = d3.scale.category10();
+
+        var drag = d3.behavior.drag()
+            .origin(function (d) { return d; })
+            .on("drag", dragmove);
+
+        var gAll = svg.append("g")
+            .attr("transform", "translate(" + outerRadius + "," + outerRadius + ")");
+
+        var arcs = gAll.selectAll("g")
+            .data(pie(dataset))
+            .enter()
+            .append("g")
+            .each(function (d) {   //指定当前区域的偏移量
+                d.dx = 0;
+                d.dy = 0;
+            })
+            .call(drag);   //在g选择集中调用drag函数
+
+        arcs.append("path")
+            .attr("fill", "white")
+            .transition()
+            .duration(2000)
+            .ease("bounce")
+            .delay(function (d, i) { return 100 * i; })
+            .attr("fill", function (d, i) { return color(i); })
+            .attr("d", function (d) { return arc(d); });
+
+        arcs.append("text")
+            .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
+            .attr("text-anchor", "middle").text(function (d) { return d.value; });
+
+        function dragmove(d) {
+            d.dx += d3.event.dx;
+            d.dy += d3.event.dy;
+            d3.select(this).attr("transform", "translate(" + d.dx + "," + d.dy + ")");
+        }
+    </script>
+</head>
+<body>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">
+                <h2>可拖拽的饼状图</h2>
+            </div>
+        </div>
+        <div class="panel-body">
+        </div>
+    </div>
+</body>
+</html>
